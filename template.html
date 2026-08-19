@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SMS Bomber</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 65, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 65, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #00ff41, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 65, 0.2));
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-top: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            margin-top: 10px;
+        }
+        
+        .form-card {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-card:hover {
+            border-color: rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+        }
+        
+        .form-card label {
+            color: #00ff41;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .input-group input[type="text"] {
+            flex: 1;
+            padding: 18px 20px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid rgba(0, 255, 65, 0.2);
+            border-radius: 12px;
+            color: #00ff41;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.1);
+            background: rgba(10, 10, 10, 0.95);
+        }
+        
+        .input-group input[type="text"]::placeholder {
+            color: #333;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+        
+        .btn-primary {
+            padding: 18px 40px;
+            background: linear-gradient(45deg, #00ff41, #00cc33);
+            border: none;
+            border-radius: 12px;
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary .icon {
+            margin-right: 10px;
+        }
+        
+        .message-box {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: #00ff41;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .stats-card {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            margin-bottom: 30px;
+        }
+        
+        .stats-card h3 {
+            color: #00ff41;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            border-color: rgba(0, 255, 65, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #00ff41;
+        }
+        
+        .stat-value.success {
+            color: #00ff41;
+        }
+        
+        .stat-value.failed {
+            color: #ff0040;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(10, 10, 10, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff41, #00ff88);
+            transition: width 1s ease;
+            border-radius: 4px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+        
+        .result-card {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(51, 51, 51, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .result-card:hover {
+            border-color: rgba(0, 255, 65, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .api-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .status-badge {
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+        
+        .status-success {
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+        
+        .status-failed {
+            background: rgba(255, 0, 64, 0.1);
+            color: #ff0040;
+            border: 1px solid rgba(255, 0, 64, 0.2);
+        }
+        
+        .http-code {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        
+        .arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            margin-left: 10px;
+            color: #666;
+        }
+        
+        .arrow.rotated {
+            transform: rotate(180deg);
+        }
+        
+        .response-body {
+            display: none;
+            background: rgba(10, 10, 10, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 2px solid #00ff41;
+            overflow-x: auto;
+        }
+        
+        .response-body.active {
+            display: block;
+        }
+        
+        .response-body pre {
+            color: #00ff41;
+            font-size: 0.7em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #333;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(51, 51, 51, 0.3);
+        }
+        
+        .footer a {
+            color: #00ff41;
+            text-decoration: none;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 65, 0.1);
+            border-top: 3px solid #00ff41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 SMS BOMBER</h1>
+            <div class="subtitle">⚡ Turbo Edition ⚡</div>
+            <div class="badge">🔒 Secure & Anonymous</div>
+        </div>
+        
+        <div class="form-card">
+            <form method="GET" id="bombForm">
+                <label>📱 Enter Phone Number (10 digits):</label>
+                <div class="input-group">
+                    <input type="text" 
+                           name="mobile" 
+                           required 
+                           pattern="^\d{10}$" 
+                           placeholder="9876543210"
+                           value="<?= isset($_GET['mobile']) ? htmlspecialchars($_GET['mobile']) : '' ?>"
+                           id="mobileInput">
+                    <button type="submit" name="submit" value="bomb" class="btn-primary" id="bombBtn">
+                        <span class="icon">💣</span> Start Bombing
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <?php if (isset($message)): ?>
+            <div class="message-box">
+                <span><?= $message; ?></span>
+                <?php if (isset($totalTime)): ?>
+                    <br><small style="opacity: 0.7;">⏱️ <?= $totalTime; ?> seconds</small>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($results)): ?>
+            <div class="stats-card">
+                <h3>📊 Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value"><?= count($results); ?></div>
+                        <div class="stat-label">Total Requests</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value success"><?= $successful; ?></div>
+                        <div class="stat-label">✅ Successful</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value failed"><?= $failed; ?></div>
+                        <div class="stat-label">❌ Failed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value"><?= round($successful / count($results) * 100); ?>%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: <?= round($successful / count($results) * 100); ?>%"></div>
+                </div>
+            </div>
+            
+            <div class="results-grid">
+                <?php foreach ($results as $result): ?>
+                    <div class="result-card" onclick="toggleResponse(this)">
+                        <div class="result-header">
+                            <span class="api-name"><?= htmlspecialchars($result['name']); ?></span>
+                            <span>
+                                <span class="status-badge <?= $result['success'] ? 'status-success' : 'status-failed'; ?>">
+                                    <?= $result['httpCode']; ?>
+                                </span>
+                                <span class="arrow">▼</span>
+                            </span>
+                        </div>
+                        <div class="http-code">
+                            <?= $result['success'] ? '✅ Success' : '❌ Failed'; ?>
+                            <?php if (isset($result['time'])): ?>
+                                <span style="margin-left: 10px;">⏱️ <?= $result['time']; ?>ms</span>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($result['response']): ?>
+                            <div class="response-body">
+                                <pre><?= htmlspecialchars(json_encode($result['response'], JSON_PRETTY_PRINT)); ?></pre>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <div class="footer">
+            <p>⚠️ For educational purposes only. Use responsibly.</p>
+            <p style="margin-top: 5px;">Powered by PHP & Cloudflare</p>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle response body
+        function toggleResponse(card) {
+            const body = card.querySelector('.response-body');
+            const arrow = card.querySelector('.arrow');
+            if (body) {
+                body.classList.toggle('active');
+                if (arrow) {
+                    arrow.classList.toggle('rotated');
+                }
+            }
+        }
+        
+        // Form submission loader
+        document.getElementById('bombForm')?.addEventListener('submit', function(e) {
+            const btn = document.getElementById('bombBtn');
+            if (btn) {
+                btn.innerHTML = '<span class="loader"></span> Processing...';
+                btn.disabled = true;
+            }
+        });
+        
+        // Auto-expand results on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultCards = document.querySelectorAll('.result-card');
+            resultCards.forEach((card, index) => {
+                if (index < 3) { // Auto expand first 3 results
+                    const body = card.querySelector('.response-body');
+                    const arrow = card.querySelector('.arrow');
+                    if (body && body.innerHTML.trim()) {
+                        body.classList.add('active');
+                        if (arrow) arrow.classList.add('rotated');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
