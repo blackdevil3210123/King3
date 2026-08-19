@@ -1,15 +1,12 @@
 {
-  "name": "astroyogi-otp-worker",
+  "name": "otp-sender",
   "version": "1.0.0",
-  "description": "Astroyogi Voice OTP Cloudflare Worker",
-  "main": "worker.js",
+  "description": "Astroyogi Voice OTP",
   "scripts": {
-    "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "publish": "wrangler publish"
+    "dev": "wrangler dev"
   },
-  "dependencies": {},
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "wrangler": "^4.0.0"
   }
 }
